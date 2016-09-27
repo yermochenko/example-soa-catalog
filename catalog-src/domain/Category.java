@@ -2,19 +2,10 @@ package domain;
 
 import java.util.List;
 
-public class Category {
-	private Integer id;
+public class Category extends Entity {
 	private String name;
 	private Category parent;
 	private List<Category> children;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

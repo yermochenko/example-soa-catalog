@@ -1,19 +1,10 @@
 package domain;
 
-public class Product {
-	private Integer id;
+public class Product extends Entity {
 	private String name;
 	private String description;
 	private Integer price;
 	private Category category;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
