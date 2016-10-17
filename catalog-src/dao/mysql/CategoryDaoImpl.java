@@ -53,6 +53,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 				category.setId(id);
 				category.setName(resultSet.getString("name"));
 				category.setParent(new Category());
+				category.setChildren(new ArrayList<>());
 				Integer parentId = resultSet.getInt("parent_id");
 				if(!resultSet.wasNull()) {
 					category.getParent().setId(parentId);
@@ -80,9 +81,10 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 				Category category = new Category();
 				category.setId(resultSet.getInt("id"));
 				category.setName(resultSet.getString("name"));
-				category.setParent(new Category());
+				category.setChildren(new ArrayList<>());
 				Integer parentId = resultSet.getInt("parent_id");
 				if(!resultSet.wasNull()) {
+					category.setParent(new Category());
 					category.getParent().setId(parentId);
 				}
 				categories.add(category);
