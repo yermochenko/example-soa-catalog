@@ -13,7 +13,7 @@ final public class ConnectionPool {
 	private String user;
 	private String password;
 	private int maxSize;
-	private int checkConnectionTimeout;
+	private int validateConnectionTimeout;
 
 	private BlockingQueue<PooledConnection> freeConnections = new LinkedBlockingQueue<>();
 	private Set<PooledConnection> usedConnections = new ConcurrentSkipListSet<>();
@@ -26,7 +26,7 @@ final public class ConnectionPool {
 			try {
 				if(!freeConnections.isEmpty()) {
 					connection = freeConnections.take();
-					if(!connection.isValid(checkConnectionTimeout)) {
+					if(!connection.isValid(validateConnectionTimeout)) {
 						try {
 							connection.getConnection().close();
 						} catch(SQLException e) {}
@@ -47,7 +47,7 @@ final public class ConnectionPool {
 
 	synchronized void freeConnection(PooledConnection connection) {
 		try {
-			if(connection.isValid(checkConnectionTimeout)) {
+			if(connection.isValid(validateConnectionTimeout)) {
 				connection.clearWarnings();
 				connection.setAutoCommit(true);
 				usedConnections.remove(connection);
@@ -60,7 +60,7 @@ final public class ConnectionPool {
 		}
 	}
 
-	public synchronized void init(String driverClass, String url, String user, String password, int startSize, int maxSize, int checkConnectionTimeout) throws ConnectionPoolException {
+	public synchronized void init(String driverClass, String url, String user, String password, int startSize, int maxSize, int validateConnectionTimeout) throws ConnectionPoolException {
 		try {
 			destroy();
 			Class.forName(driverClass);
@@ -68,7 +68,7 @@ final public class ConnectionPool {
 			this.user = user;
 			this.password = password;
 			this.maxSize = maxSize;
-			this.checkConnectionTimeout = checkConnectionTimeout;
+			this.validateConnectionTimeout = validateConnectionTimeout;
 			for(int counter = 0; counter < startSize; counter++) {
 				freeConnections.put(createConnection());
 			}
